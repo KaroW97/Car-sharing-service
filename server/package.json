@@ -1,0 +1,33 @@
+{
+  "name": "car-sharing-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devStart": "nodemon app",
+    "lint": "eslint -c @eslintrc/.eslintrc.js **/*.js --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaroW97/Car-sharing-service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaroW97/Car-sharing-service/issues"
+  },
+  "homepage": "https://github.com/KaroW97/Car-sharing-service#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
