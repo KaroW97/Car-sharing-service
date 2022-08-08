@@ -1,6 +1,7 @@
 const Car = require('../database/model/Car')
 const carShare = require('../database/model/CurrentSharing')
 const queryUtils = require('../database/mongo/queryUtils')
+const { reqValidation } = require('../Joi/joiValidation')
 const { message, validMessages } = require('../utils/message')
 const { validate } = require('../utils/validate')
 
@@ -10,20 +11,25 @@ const { validate } = require('../utils/validate')
  * @param {Response<any, Record<string, any>, number>} res
  * @returns {Promise}
  */
-exports.addNewRunHandler = async (body, res) => {
-  try {
-    const share = new carShare(body.currentRun)
+exports.addNewRunHandler = async (body) => {
+  // Validate and use careShare schema
+  await reqValidation(body, { isCareShare: true })
 
-    const query = queryUtils.addNewCurrentRun(body, share)
+  // Create carShere schema
+  const share = new carShare(body.currentRun)
 
-    const car = await Car.updateOne(query.filter, query.update)
+  // Create query for adding new element to the array book history and current run
+  const query = queryUtils.addNewCurrentRun(body, share)
 
-    validate(car.matchedCount, res)
+  // Update correct car book array
+  const car = await Car.updateOne(query.filter, query.update)
 
-    await share.save()
+  // Check if anything was updated
+  validate(car.matchedCount)
 
-    res.send(message(body, validMessages.newSharing))
-  } catch (err) {
-    return err
-  }
+  // Save changes for shareCar collection
+  await share.save()
+
+  // Return message
+  return message(body, validMessages.newSharing)
 }

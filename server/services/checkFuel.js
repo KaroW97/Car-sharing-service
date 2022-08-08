@@ -7,14 +7,13 @@ const { validMessages, message } = require('../utils/message')
  * @param {Response<any, Record<string, any>, number>} res
  * @returns {Promise}
  */
-exports.checkFuelHandler = async (res) => {
-  try {
-    const query = queryUtils.checkFuel()
+exports.checkFuelHandler = async () => {
+  // Create query for checking fuel level
+  const query = queryUtils.checkFuel()
 
-    const data = await Car.find(query)
+  // Find all matching
+  const data = await Car.find(query)
 
-    res.send(message(null, validMessages.allCarsMachining, data))
-  } catch (err) {
-    return err
-  }
+  // Return response
+  return message(null, validMessages.allCarsMachining, data)
 }

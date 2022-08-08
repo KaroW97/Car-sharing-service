@@ -8,10 +8,6 @@ const { validMessages } = message
  * @param {Response<any, Record<string, any>, number>} res
  * @param {string} info - error message
  */
-exports.validate = (data, res, info = validMessages.noCarFound) => {
-  if (!data) {
-    const error = message.errorMessage(new DataNotFound(info))
-
-    throw res.send(error)
-  }
+exports.validate = (data, info = validMessages.noCarFound) => {
+  if (!data) throw new DataNotFound(info)
 }

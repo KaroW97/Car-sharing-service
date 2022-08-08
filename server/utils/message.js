@@ -6,7 +6,7 @@ const validMessages = {
   newCarAdded: 'Car registered',
   carExists: 'Car with given VIN or registration number exists',
   noUnauthorizeFound: 'No customer with unauthorized card found',
-  noCarUpdate: 'No car was updated',
+  noCarUpdate: 'No car was found to be updated',
   allCarsMachining: 'All cars machining to the request'
 }
 

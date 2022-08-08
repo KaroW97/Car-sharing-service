@@ -12,7 +12,7 @@ const carShare = new Schema({
     firstName: String,
     lastName: String,
     creditCard: {
-      number: Number,
+      number: String,
       owner: String,
       validThrough: Date
     }

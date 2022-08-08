@@ -21,24 +21,22 @@ const createResponse = (cars) =>
  * @param {Response<any, Record<string, any>, number>} res
  * @returns {Promise}
  */
-exports.updateLocationHandler = async (res) => {
-  try {
-    const query = queryUtils.getBookingHistory()
+exports.updateLocationHandler = async () => {
+  // Create query for getting all cars with correct status
+  const query = queryUtils.getBookingHistory()
 
-    const updated = await Car.updateMany(query.filter, query.update)
+  // Update cars
+  const { modifiedCount } = await Car.updateMany(query.filter, query.update)
 
-    validate(updated.modifiedCount, res, validMessages.noCarUpdate)
+  // Check if any updated
+  validate(modifiedCount, validMessages.noCarUpdate)
 
-    const cars = await Car.find(queryUtils.getWithChangedLocation())
+  // Get all with changed location currently and in the past
+  const cars = await Car.find(queryUtils.getWithChangedLocation())
 
-    validate(cars.length, res, validMessages.noCarUpdate)
+  // Create response
+  const response = createResponse(cars)
 
-    const response = createResponse(cars)
-
-    const valid = message({ length: cars.length }, response)
-
-    res.send(valid)
-  } catch (err) {
-    return err
-  }
+  // Return message
+  return message({ length: cars.length }, response)
 }

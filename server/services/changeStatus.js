@@ -8,16 +8,16 @@ const { message, validMessages } = require('../utils/message')
  * @param {Response<any, Record<string, any>, number>} res
  * @returns {Promise}
  */
-exports.changeStatusHandler = async (res) => {
-  try {
-    const query = queryUtils.changeStatus()
+exports.changeStatusHandler = async () => {
+  // Create query for updating cars status
+  const query = queryUtils.changeStatus()
 
-    const carStatus = await Car.updateMany(query.filter, query.update)
+  // Update cars
+  const { modifiedCount } = await Car.updateMany(query.filter, query.update)
 
-    validate(carStatus.modifiedCount, res)
+  // Check if anything was updated
+  validate(modifiedCount)
 
-    res.send(message(null, validMessages.carUpdated))
-  } catch (err) {
-    return err
-  }
+  // Return message
+  return message(null, validMessages.carUpdated)
 }

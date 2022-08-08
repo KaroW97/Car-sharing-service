@@ -10,22 +10,24 @@ const { message, validMessages } = require('../utils/message')
  * @param {Response<any, Record<string, any>, number>} res
  * @returns {Promise}
  */
-exports.deleteHandler = async (params, res) => {
-  try {
-    const { vin } = params
+exports.deleteHandler = async (params) => {
+  // Get vin value
+  const { vin } = params
 
-    const car = await Car.findOneAndDelete({ vin })
+  // Find car and delete
+  const car = await Car.findOneAndDelete({ vin })
 
-    validate(car, res)
+  // Check if deleted
+  validate(car)
 
-    const shares = Object.values(car)
-      .map((value) => value.currentRun)
-      .filter((item) => item !== undefined)
+  // Delete shares for found car
+  const shares = Object.values(car)
+    .map((value) => value.currentRun)
+    .filter((item) => item !== undefined)
 
-    await carShare.deleteMany(queryUtils.deleteManyShares(shares))
+  // Delete car shares for car
+  await carShare.deleteMany(queryUtils.deleteManyShares(shares))
 
-    res.send(message(params, validMessages.carDeleted))
-  } catch (err) {
-    return err
-  }
+  // Return message
+  return message(params, validMessages.carDeleted)
 }

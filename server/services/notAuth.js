@@ -9,18 +9,22 @@ const { validate } = require('../utils/validate')
  * @param {Response<any, Record<string, any>, number>} res
  * @returns {Promise}
  */
-exports.notAuthHandler = async (res) => {
-  try {
-    const data = await Car.find(queryUtils.getReservedNotAuth())
+exports.notAuthHandler = async () => {
+  // Create query for all cars with RESERVED status
+  const query = queryUtils.getReservedNotAuth()
 
-    validate(data.length, res)
+  // Find all
+  const data = await Car.find(query)
 
-    const response = await queryUtils.getInvalidCustomers(data)
+  // Check if there are any
+  validate(data.length)
 
-    validate(response.length, res, validMessages.noUnauthorizeFound)
+  // Get customers with invalid credit card
+  const response = await queryUtils.getInvalidCustomers(data)
 
-    res.send(message(null, response))
-  } catch (err) {
-    return err
-  }
+  // Check if there are any
+  validate(response.length, validMessages.noUnauthorizeFound)
+
+  // Return message
+  return message(null, response)
 }

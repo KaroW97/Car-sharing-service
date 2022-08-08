@@ -12,7 +12,6 @@ mongoose.connect('mongodb://localhost:27017/car', {
 const db = mongoose.connection
 
 db.on('error', (error) => {
-  console.log('JESTEM')
   console.error(error)
 })
 
