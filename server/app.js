@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const Car = require('./routers/car')
 const { errorMessage } = require('./utils/message')
 const errors = require('./utils/errors')
-mongoose.connect('mongodb://localhost:27017/car', {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true
 })
 
@@ -27,4 +27,4 @@ app.use((req, res) => {
   res.send(errorMessage(new errors.NotFound()))
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
