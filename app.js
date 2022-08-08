@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const Car = require('./routers/car')
 const { errorMessage } = require('./utils/message')
 const errors = require('./utils/errors')
+require('dotenv').config();
+
 mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true
 })
