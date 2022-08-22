@@ -29,4 +29,4 @@ app.use((req, res) => {
   res.send(errorMessage(new errors.NotFound()))
 })
 
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 4000)
