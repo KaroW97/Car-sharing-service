@@ -1,7 +1,7 @@
 /**
  * When incorrect data provided
  */
-class BadRequest extends Error {
+class BadRequestError extends Error {
   constructor(details) {
     super('BAD_REQUEST')
     this.status = 400
@@ -13,7 +13,7 @@ class BadRequest extends Error {
 /**
  * No data for provided Id
  */
-class NotFound extends Error {
+class NotFoundError extends Error {
   constructor(details = 'Page could not be found') {
     super('NOT_FOUND')
 
@@ -23,7 +23,7 @@ class NotFound extends Error {
   }
 }
 
-class DataNotFound extends NotFound {
+class DataNotFoundError extends NotFoundError {
   constructor(message) {
     super(message)
   }
@@ -32,7 +32,7 @@ class DataNotFound extends NotFound {
 /**
  * Data Already exists
  */
-class AlreadyExists extends Error {
+class AlreadyExistsError extends Error {
   constructor(details) {
     super('CONFLICT')
     this.status = 409
@@ -42,8 +42,8 @@ class AlreadyExists extends Error {
 }
 
 module.exports = {
-  BadRequest,
-  NotFound,
-  DataNotFound,
-  AlreadyExists
+  BadRequestError,
+  NotFoundError,
+  DataNotFoundError,
+  AlreadyExistsError
 }

@@ -1,11 +1,11 @@
+const { errors, errorMessage } = require('./utils/index')
+const bodyParser = require('body-parser')
+const Car = require('./routers/car')
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser')
-const Car = require('./routers/car')
-const { errorMessage } = require('./utils/message')
-const errors = require('./utils/errors')
-require('dotenv').config();
+
+require('dotenv').config()
 
 mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true
@@ -26,7 +26,7 @@ app.use('/car', Car)
 app.use((req, res) => {
   res.status(404)
 
-  res.send(errorMessage(new errors.NotFound()))
+  res.send(errorMessage(new errors.NotFoundError()))
 })
 
 app.listen(process.env.PORT || 4000)

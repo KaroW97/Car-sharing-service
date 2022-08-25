@@ -27,8 +27,8 @@ const createDetails = (body) => {
   }))
 }
 
-const message = (body, message, details) => {
-  const { vin, registration_number, length } = body || {}
+const message = (body, message) => {
+  const { vin, registration_number, length, car_info } = body || {}
 
   return {
     data: JSON.parse(
@@ -37,7 +37,8 @@ const message = (body, message, details) => {
         vin,
         registration_number,
         message,
-        details: createDetails(details)
+        car_info,
+        details: createDetails(body)
       })
     )
   }
@@ -52,9 +53,21 @@ const errorMessage = ({ name, message, status }) => ({
   error: { status, name, message }
 })
 
+const createInvalidCustomerResponse = (data, { vin, location }) =>
+  data.map(({ rentingDriver }) => ({
+    vin,
+    location,
+    driver: {
+      firstName: rentingDriver.firstName,
+      lastName: rentingDriver.lastName,
+      licenseNumber: rentingDriver.licenseNumber,
+      cardValidTill: rentingDriver.creditCard.validThrough
+    }
+  }))
+
 module.exports = {
   errorMessage,
-  createDetails,
   message,
-  validMessages
+  validMessages,
+  createInvalidCustomerResponse
 }

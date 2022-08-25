@@ -19,6 +19,7 @@ const carShareJoi = Joi.object({
 })
 
 const carJoi = Joi.object({
+  model_type: Joi.string().valid('Car').required(),
   vin: Joi.string().length(17).required(),
   registration_number: Joi.string().length(6).required(),
   fuelLevel: Joi.number().min(0).max(1),

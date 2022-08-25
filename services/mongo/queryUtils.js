@@ -1,9 +1,5 @@
-const carShare = require('../model/CurrentSharing')
 const { queries, MongoQuery } = require('./Query')
-const {
-  createUpdateQuery,
-  createInvalidCustomerResponse
-} = require('./queryHelpers')
+const { createUpdateQuery } = require('./queryHelpers')
 const mongoQuery = new MongoQuery()
 
 /**
@@ -39,7 +35,7 @@ exports.addNew = ({ vin, registration_number }) =>
  * @param {string} id
  * @returns {Record<string, unknown>}
  */
-const getInvalidCreditCards = (id) =>
+exports.getInvalidCreditCards = (id) =>
   mongoQuery
     .queryAnd(['_id', id])
     .queryAnd([
@@ -71,7 +67,7 @@ exports.deleteManyShares = (shares) =>
  * then the location will be set to [53.8882836, 27.5442615]
  * @returns {Record<string, unknown>}
  */
-exports.getBookingHistory = () => {
+exports.setNewLocation = () => {
   const filter = mongoQuery
     .queryAnd(['status', queries.NOT(['Reserved', 'In use'], 'IN')])
     .queryAnd([
@@ -120,23 +116,4 @@ exports.changeStatus = () => {
     .build()
 
   return createUpdateQuery(filter)
-}
-
-/**
- * Returns response with all drivers with not verified credit card
- * @param {Record<string, unknown>} car
- * @returns {Promise<Record<string, unknown>>[]}
- */
-exports.getInvalidCustomers = async (car) => {
-  const response = await car.map(async (item) => {
-    const query = getInvalidCreditCards(item.currentRun)
-
-    const shares = await carShare.find(query)
-
-    if (shares.length) return createInvalidCustomerResponse(shares, item)
-  })
-
-  return (await Promise.all(response))
-    .filter((data) => data !== undefined)
-    .flat()
 }
